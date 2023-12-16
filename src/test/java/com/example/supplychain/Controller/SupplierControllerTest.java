@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.example.supplychain.controller.SupplierController;
 import com.example.supplychain.model.Facility;
 import com.example.supplychain.model.Supplier;
-import com.example.supplychain.model.Supplier.Address;
+import com.example.supplychain.model.Address;
 import com.example.supplychain.service.SupplierServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

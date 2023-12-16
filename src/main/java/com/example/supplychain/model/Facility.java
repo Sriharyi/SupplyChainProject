@@ -25,10 +25,10 @@ public class Facility {
     @Id
     private String _id;
     private String facilityName;
-    private String facilityAddress;
+    private Address facilityAddress;
     @DocumentReference(collection = "supplier")
     private Supplier supplierId;
-    // private ArrayList<String> certifications;
+    private ArrayList<String> certifications;
 
     // @Data
     // public class Address{

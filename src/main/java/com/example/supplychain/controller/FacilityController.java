@@ -32,14 +32,14 @@ public class FacilityController {
 
     //create and save the Facility
     @PostMapping("/save")
-    public ResponseEntity<String> insertFacility(@RequestBody Facility facility) {
+    public ResponseEntity<Facility> insertFacility(@RequestBody Facility facility) {
         try {
-            service.saveData(facility);
-            return new ResponseEntity<String>( "Inserted Successfully",HttpStatus.OK);
+            
+            return new ResponseEntity<Facility>( service.saveData(facility),HttpStatus.OK);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<String>( "Internal error",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Facility>( new Facility(),HttpStatus.BAD_REQUEST);
         }
     }
     
@@ -61,9 +61,13 @@ public class FacilityController {
     @GetMapping("/select/{id}")
     public ResponseEntity<Facility> selectById(@PathVariable("id")String id){
         try {
-            return new ResponseEntity<Facility>(service.getById(id),HttpStatus.OK);
+            if(service.getById(id).equals(null))
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            else
+            return new ResponseEntity<Facility>( service.getById(id),HttpStatus.OK);
+            
         } catch (Exception e) {
-           
+            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
         }
@@ -72,29 +76,29 @@ public class FacilityController {
 
     //update the Facility;
     @PutMapping("update")
-    public ResponseEntity<String> updateFacility(@RequestBody Facility facility) {
+    public ResponseEntity<Facility> updateFacility(@RequestBody Facility facility) {
         try {
-            service.updateFacility(facility); 
-            return new ResponseEntity<String>( "Updated Successfully",HttpStatus.OK);
+            return new ResponseEntity<Facility>( service.updateData(facility),HttpStatus.OK);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<String>("Internal error",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteFacility(@PathVariable String id)
+    public ResponseEntity<Boolean> deleteFacility(@PathVariable String id)
     {
         try {
-            if(service.getById(id)==null)
-            service.deleteData(id);
-            else return new ResponseEntity<String>("Id not found",HttpStatus.NOT_FOUND) ;
-            return new ResponseEntity<String>("Deleted Successfully",HttpStatus.OK);     
+            if(service.getById(id)!=null)
+            return new ResponseEntity<>(service.deleteData(id),HttpStatus.OK);
+            else return new ResponseEntity<>(false,HttpStatus.NOT_FOUND) ;
+            
+            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<String>("Internal error",HttpStatus.BAD_REQUEST) ;
+            return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST) ;
         }
     }
 

@@ -6,15 +6,15 @@ import com.example.supplychain.model.Facility;
 
 public interface FacilityServiceInterface {
 
-    void saveData(Facility facility);
+    Facility saveData(Facility facility);
 
     List<Facility> getAllFacility();
 
     Facility getById(String id);
 
-    void updateFacility(Facility facility);
+    Facility updateData(Facility facility);
 
-    void deleteData(String id);
+    Boolean deleteData(String id);
 
 
 }

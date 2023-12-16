@@ -17,8 +17,8 @@ public class FacilityService implements FacilityServiceInterface{
     private FacilityRepository repo;
 
     @Override
-    public void saveData(Facility facility) {
-        repo.save(facility);
+    public Facility saveData(Facility facility) {
+        return repo.save(facility);
     }
 
     @Override
@@ -33,13 +33,14 @@ public class FacilityService implements FacilityServiceInterface{
     }
 
     @Override
-    public void updateFacility(Facility facility) {
-        repo.save(facility);
+    public Facility updateData(Facility facility) {
+        return repo.save(facility);
     }
 
     @Override
-    public void deleteData(String id) {
+    public Boolean deleteData(String id) {
         repo.deleteById(id);
+        return true;
     }
 
 }

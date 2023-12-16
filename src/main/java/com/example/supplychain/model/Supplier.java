@@ -25,14 +25,4 @@ public class Supplier {
     private String supplierTierNo;
     private String rawMaterial;
     private String styles;
-
-    @Data
-    @Builder
-    public static class Address{
-		private String street;
-        private String city;
-        private String pincode;
-		private String state;
-		private String country;
-	}
 }
