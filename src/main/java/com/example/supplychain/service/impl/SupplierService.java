@@ -18,8 +18,13 @@ public class SupplierService implements SupplierServiceInterface{
 
     @Override
     public Supplier getById(String id) {
-       Optional<Supplier> result = repo.findById(id);
-      return result.isPresent()?result.get():result.orElse(result.get());
+       Optional<Supplier> result = Optional.of(new Supplier());
+       try {
+          result = repo.findById(id);
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+       return result.isPresent()?result.get():result.orElse(result.get());
     }
 
     @Override
@@ -29,12 +34,28 @@ public class SupplierService implements SupplierServiceInterface{
 
     @Override
     public Supplier saveData(Supplier supplier) {
-        return repo.save(supplier);
+       Supplier supp = new Supplier();  
+      try {
+          supp = repo.save(supplier);
+
+      } catch (Exception e) {
+         
+         e.printStackTrace();
+      }
+      return supp;
     }
 
     @Override
     public Supplier updateData(Supplier supplier) {
-        return repo.save(supplier);
+      Supplier supp=new Supplier();
+      try {
+         if (repo.existsById(supplier.get_id())) {
+            supp = repo.save(supplier);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+      return supp;
        
     }
 

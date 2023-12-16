@@ -1,14 +1,17 @@
 package com.example.supplychain.model;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Document("brand")
+@Document("brands")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +22,6 @@ public class Brand {
     private String brandName;
     private String parentCompany;
     private String website;
-
+    @DocumentReference(collection = "styles")
+    private ArrayList<Style> styleCollections; 
 }

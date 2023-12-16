@@ -1,7 +1,5 @@
 package com.example.supplychain.model;
 
-import java.util.ArrayList;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -12,9 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
-@Document("facility")
+@Document("facilities")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -25,17 +22,7 @@ public class Facility {
     @Id
     private String _id;
     private String facilityName;
-    private Address facilityAddress;
-    @DocumentReference(collection = "supplier")
+    private FacilityAddress facilityAddress;
+    @DocumentReference(collection = "suppliers")
     private Supplier supplierId;
-    private ArrayList<String> certifications;
-
-    // @Data
-    // public class Address{
-	// 	private String street;
-    //     private String city;
-    //     private String pincode;
-	// 	private String state;
-	// 	private String country;
-	// }
 }
