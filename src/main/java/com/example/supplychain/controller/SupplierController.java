@@ -33,14 +33,14 @@ public class SupplierController {
 
     //create and save the Supplier
     @PostMapping("/save")
-    public ResponseEntity<String> insertSupplier(@RequestBody Supplier supplier) {
+    public ResponseEntity<Supplier> insertSupplier(@RequestBody Supplier supplier) {
         try {
-            service.saveData(supplier);
-            return new ResponseEntity<String>("Inserted Successfully",HttpStatus.OK);
+            
+            return new ResponseEntity<Supplier>(service.saveData(supplier),HttpStatus.CREATED);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<String>("Internal error",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Supplier>(HttpStatus.BAD_REQUEST);
         }
     }
     
@@ -73,14 +73,12 @@ public class SupplierController {
 
     //update the Supplier;
     @PutMapping("update")
-    public ResponseEntity<String> updateSupplier(@RequestBody Supplier supplier) {
+    public ResponseEntity<Supplier> updateSupplier(@RequestBody Supplier supplier) {
         try {
-            service.updateData(supplier); 
-            return new ResponseEntity<String>( "Updated Successfully",HttpStatus.OK);
+            return new ResponseEntity<Supplier>(service.updateData(supplier),HttpStatus.OK);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<String>( "Internal error",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Supplier>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -88,14 +86,67 @@ public class SupplierController {
     public ResponseEntity<String> deleteSupplier(@PathVariable String id)
     {
         try {
-            if(service.getById(id)==null)
-            service.deleteData(id);
+            if(service.deleteData(id)){
+                    return  new ResponseEntity<String>( "Deleted Successfully",HttpStatus.OK);
+            }
             else return new ResponseEntity<String>( "Id not found",HttpStatus.NOT_FOUND);
-            return  new ResponseEntity<String>( "Deleted Successfully",HttpStatus.OK);
+           
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
            return new ResponseEntity<String>( "Internal error",HttpStatus.BAD_REQUEST);
         }
     }
 }
+
+// SupplierBuilder.builder()
+//                 ._id(generateRandomHexString(24))
+//                 .supplierName("Sample Supplier")
+//                 .supplierAddress(Address.builder()
+//                         .street("123 Main St")
+//                         .city("Cityville")
+//                         .pincode("12345")
+//                         .state("Stateville")
+//                         .country("Countryland")
+//                         .build())
+//                 .supplierContact("123-456-7890")
+//                 .supplierEmail("sample@supplier.com")
+//                 .supplierWebsite("www.sample-supplier.com")
+//                 .supplierTierNo("Tier 1")
+//                 .rawMaterial("Sample Raw Material")
+//                 .styles("Sample Styles")
+//                 .build();
+
+// SupplierBuilder.builder()
+//         ._id(generateRandomHexString(24))
+//         .supplierName("Another Supplier")
+//         .supplierAddress(SupplierBuilder.Address.builder()
+//                 .street("456 Oak St")
+//                 .city("Villagetown")
+//                 .pincode("54321")
+//                 .state("Stateland")
+//                 .country("Countryville")
+//                 .build())
+//         .supplierContact("987-654-3210")
+//         .supplierEmail("another@supplier.com")
+//         .supplierWebsite("www.another-supplier.com")
+//         .supplierTierNo("Tier 2")
+//         .rawMaterial("Another Raw Material")
+//         .styles("Another Styles")
+//         .build();
+// SupplierBuilder.builder()
+//         ._id(generateRandomHexString(24))
+//         .supplierName("Third Supplier")
+//         .supplierAddress(SupplierBuilder.Address.builder()
+//                 .street("789 Pine St")
+//                 .city("Townsville")
+//                 .pincode("98765")
+//                 .state("Stateville")
+//                 .country("Countryland")
+//                 .build())
+//         .supplierContact("555-123-4567")
+//         .supplierEmail("third@supplier.com")
+//         .supplierWebsite("www.third-supplier.com")
+//         .supplierTierNo("Tier 3")
+//         .rawMaterial("Third Raw Material")
+//         .styles("Third Styles")
+//         .build();

@@ -28,19 +28,27 @@ public class SupplierService implements SupplierServiceInterface{
     }
 
     @Override
-    public void saveData(Supplier supplier) {
-        repo.save(supplier);
+    public Supplier saveData(Supplier supplier) {
+        return repo.save(supplier);
     }
 
     @Override
-    public void updateData(Supplier supplier) {
-        repo.save(supplier);
+    public Supplier updateData(Supplier supplier) {
+        return repo.save(supplier);
        
     }
 
     @Override
-    public void deleteData(String id) {
-        repo.deleteById(id);
+    public Boolean deleteData(String id) {
+         if(repo.existsById(id))
+         {
+            repo.deleteById(id);
+            return true;
+         }
+         else 
+         {
+            return false;
+         }
     }
 
 }

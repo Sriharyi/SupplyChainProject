@@ -10,10 +10,10 @@ public interface SupplierServiceInterface {
 
     List<Supplier> getAllSupplier();
 
-    void saveData(Supplier supplier);
+    Supplier saveData(Supplier supplier);
 
-    void updateData(Supplier supplier);
+    Supplier updateData(Supplier supplier);
 
-    void deleteData(String id);
+    Boolean deleteData(String id);
 
 }

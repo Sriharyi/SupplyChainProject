@@ -50,7 +50,7 @@ public class FacilityController {
         try {
             return new ResponseEntity<List<Facility>>( service.getAllFacility(),HttpStatus.OK);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
@@ -61,9 +61,9 @@ public class FacilityController {
     @GetMapping("/select/{id}")
     public ResponseEntity<Facility> selectById(@PathVariable("id")String id){
         try {
-            return new ResponseEntity<Facility>( service.getById(id),HttpStatus.OK);
+            return new ResponseEntity<Facility>(service.getById(id),HttpStatus.OK);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+           
             e.printStackTrace();
             return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
         }
@@ -90,8 +90,7 @@ public class FacilityController {
             if(service.getById(id)==null)
             service.deleteData(id);
             else return new ResponseEntity<String>("Id not found",HttpStatus.NOT_FOUND) ;
-            return new ResponseEntity<String>("Deleted Successfully",HttpStatus.OK);
-            
+            return new ResponseEntity<String>("Deleted Successfully",HttpStatus.OK);     
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

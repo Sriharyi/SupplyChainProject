@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -18,22 +19,23 @@ import org.bson.types.ObjectId;
 @NoArgsConstructor
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 public class Facility {
     
     @Id
     private String _id;
     private String facilityName;
-    private Address facilityAddress;
+    private String facilityAddress;
     @DocumentReference(collection = "supplier")
     private Supplier supplierId;
-    private ArrayList<String> certifications;
+    // private ArrayList<String> certifications;
 
-    @Data
-    public class Address{
-		private String street;
-        private String city;
-        private String pincode;
-		private String state;
-		private String country;
-	}
+    // @Data
+    // public class Address{
+	// 	private String street;
+    //     private String city;
+    //     private String pincode;
+	// 	private String state;
+	// 	private String country;
+	// }
 }

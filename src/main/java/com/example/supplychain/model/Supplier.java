@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Supplier {
 
     @Id
@@ -25,7 +27,8 @@ public class Supplier {
     private String styles;
 
     @Data
-    public class Address{
+    @Builder
+    public static class Address{
 		private String street;
         private String city;
         private String pincode;
