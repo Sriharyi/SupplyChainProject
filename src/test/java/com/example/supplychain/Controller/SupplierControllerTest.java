@@ -1,29 +1,23 @@
 package com.example.supplychain.Controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.supplychain.controller.SupplierController;
-import com.example.supplychain.model.Facility;
 import com.example.supplychain.model.Supplier;
-import com.example.supplychain.model.Address;
 import com.example.supplychain.service.SupplierServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,19 +38,10 @@ public class SupplierControllerTest {
         Supplier expectedOutput = Supplier.builder()
                 ._id("")
                 .supplierName("Sample Supplier")
-                .supplierAddress(Address.builder()
-                        .street("123 Main St")
-                        .city("Cityville")
-                        .pincode("12345")
-                        .state("Stateville")
-                        .country("Countryland")
-                        .build())
                 .supplierContact("123-456-7890")
                 .supplierEmail("sample@supplier.com")
                 .supplierWebsite("www.sample-supplier.com")
                 .supplierTierNo("Tier 1")
-                .rawMaterial("Sample Raw Material")
-                .styles("Sample Styles")
                 .build();
 
         Mockito.when(service.getById(Mockito.anyString())).thenReturn(expectedOutput);
@@ -81,19 +66,10 @@ public class SupplierControllerTest {
         Supplier expectedOutput = Supplier.builder()
                 ._id("")
                 .supplierName("Sample Supplier")
-                .supplierAddress(Address.builder()
-                        .street("123 Main St")
-                        .city("Cityville")
-                        .pincode("12345")
-                        .state("Stateville")
-                        .country("Countryland")
-                        .build())
                 .supplierContact("123-456-7890")
                 .supplierEmail("sample@supplier.com")
                 .supplierWebsite("www.sample-supplier.com")
                 .supplierTierNo("Tier 1")
-                .rawMaterial("Sample Raw Material")
-                .styles("Sample Styles")
                 .build();
         
         Mockito.when(service.saveData(Mockito.any(Supplier.class))).thenReturn(expectedOutput);
@@ -119,19 +95,10 @@ public class SupplierControllerTest {
         Supplier expectedOutput = Supplier.builder()
                 ._id("")
                 .supplierName("Sample Supplier")
-                .supplierAddress(Address.builder()
-                        .street("123 Main St")
-                        .city("Cityville")
-                        .pincode("12345")
-                        .state("Stateville")
-                        .country("Countryland")
-                        .build())
                 .supplierContact("123-456-7890")
                 .supplierEmail("sample@supplier.com")
                 .supplierWebsite("www.sample-supplier.com")
                 .supplierTierNo("Tier 1")
-                .rawMaterial("Sample Raw Material")
-                .styles("Sample Styles")
                 .build();
         
         Mockito.when(service.updateData(Mockito.any(Supplier.class))).thenReturn(expectedOutput);
@@ -179,6 +146,23 @@ public class SupplierControllerTest {
         System.out.println("___________");
 
         String expected =  "Id not found";
+        
+        assertEquals(result,expected);
+        }
+
+         @Test
+    void testDeleteThrowanExceptionWorks() throws Exception {
+            
+        doThrow(new Exception()).when(service.deleteData(Mockito.anyString())).notify();
+        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andReturn().getResponse()
+        .getContentAsString();
+        System.out.println("___________");
+        System.out.println(result);
+        System.out.println("___________");
+
+        String expected =  "Internal error";
         
         assertEquals(result,expected);
         }

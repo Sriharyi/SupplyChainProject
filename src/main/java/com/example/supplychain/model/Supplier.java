@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document("supplier")
+@Document("suppliers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,11 +18,8 @@ public class Supplier {
     @Id
     private String _id;
     private String supplierName;
-    private Address supplierAddress;
     private String supplierContact;
     private String supplierEmail;
     private String supplierWebsite;
     private String supplierTierNo;
-    private String rawMaterial;
-    private String styles;
 }
