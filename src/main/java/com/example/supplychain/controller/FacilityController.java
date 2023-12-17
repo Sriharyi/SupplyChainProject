@@ -1,5 +1,7 @@
 package com.example.supplychain.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class FacilityController {
         } catch (Exception e) {
             
             e.printStackTrace();
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ArrayList<Facility>(Arrays.asList(new Facility())),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -61,15 +63,15 @@ public class FacilityController {
     @GetMapping("/select/{id}")
     public ResponseEntity<Facility> selectById(@PathVariable("id")String id){
         try {
-            if(service.getById(id).equals(null))
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            if(service.getById(id)==null)
+            return new ResponseEntity<>(new Facility(),HttpStatus.NOT_FOUND);
             else
             return new ResponseEntity<Facility>( service.getById(id),HttpStatus.OK);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>( new Facility(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -82,7 +84,7 @@ public class FacilityController {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Facility(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -93,8 +95,6 @@ public class FacilityController {
             if(service.getById(id)!=null)
             return new ResponseEntity<>(service.deleteData(id),HttpStatus.OK);
             else return new ResponseEntity<>(false,HttpStatus.NOT_FOUND) ;
-            
-            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
