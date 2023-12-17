@@ -95,4 +95,46 @@ public class SupplierSerivceTest {
 
         assertNotEquals(supplier, result);
     }
+
+    @Test
+    public void testThatSupplierCanbeDeletedSuccessFully(){
+        String supplierIdToDelete = "someSupplierId";
+
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(true);
+         
+        // Mockito.when(repo.deleteById(Mockito.anyString())).thenReturn(true);
+
+        Boolean result = service.deleteData(supplierIdToDelete);
+
+        assertEquals(true, result);
+
+    }
+
+     @Test
+    public void testThatSupplierCanNotbeDeletedSuccessFully(){
+        String supplierIdToDelete = "someSupplierId";
+
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(false);
+         
+        // Mockito.when(repo.deleteById(Mockito.anyString())).thenReturn(true);
+
+        Boolean result = service.deleteData(supplierIdToDelete);
+
+        assertEquals(false, result);
+        
+    }
+
+     @Test
+    public void testThatSupplierCanthrowExceptionWhenDeletionOperation(){
+        String supplierIdToDelete = "someSupplierId";
+
+        Mockito.when(repo.existsById(Mockito.anyString())).thenThrow(RuntimeException.class);
+         
+        // Mockito.when(repo.deleteById(Mockito.anyString())).thenReturn(true);
+
+        Boolean result = service.deleteData(supplierIdToDelete);
+
+        assertEquals(false, result);
+        
+    }
 }

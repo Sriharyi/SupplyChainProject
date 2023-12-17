@@ -123,7 +123,6 @@ public class FacilityControllerTest {
                                         .andExpect(MockMvcResultMatchers.status().isOk())
                                         .andExpect(MockMvcResultMatchers.content().string(new ObjectMapper().writeValueAsString(expectedOutput)))
                                         .andReturn().getResponse().getContentAsString();
-        
         String exOutput = new ObjectMapper().writeValueAsString(expectedOutput);
         Assertions.assertThat(result).isEqualTo(exOutput);
     }
