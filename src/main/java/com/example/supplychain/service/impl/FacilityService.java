@@ -30,18 +30,36 @@ public class FacilityService implements FacilityServiceInterface{
 
     @Override
     public List<Facility> getAllFacility() {
-      return  repo.findAll(); 
+      try {
+        return  repo.findAll();
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        return null;
+      } 
     }
 
     @Override
     public Facility getById(String id) {
-      Optional<Facility> result = repo.findById(id);
-      return result.get();
+      try {
+        Optional<Facility> result = repo.findById(id);
+        return result.get();
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        return null;
+      }
     }
 
     @Override
     public Facility updateData(Facility facility) {
-        return repo.save(facility);
+        try {
+          return repo.save(facility);
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+          return null;
+        }
     }
 
     @Override
