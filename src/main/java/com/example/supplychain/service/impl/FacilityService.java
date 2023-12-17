@@ -18,7 +18,14 @@ public class FacilityService implements FacilityServiceInterface{
 
     @Override
     public Facility saveData(Facility facility) {
-        return repo.save(facility);
+      Facility fac=new Facility();
+        try {
+           fac= repo.save(facility);
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        return fac;
     }
 
     @Override

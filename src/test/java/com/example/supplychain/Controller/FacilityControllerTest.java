@@ -71,9 +71,14 @@ public class FacilityControllerTest {
 
     @Test
     void testDeleteNotWorks() throws Exception {
-        Mockito.when(service.deleteData("ab")).thenReturn(true);
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new Address("aa","aa","aa","aa","aa"), new Supplier("aa","ss",new Address("aa","aa","aa","aa","aa"),"aa","aa","aa","aa","aa","aa"),new ArrayList<String>(Arrays.asList("aa"))));
+        Mockito.when(service.deleteData("ab")).thenThrow(RuntimeException.class);
         // (new Facility("ab","Sai",new Address("aa","aa","aa","aa","aa"), new Supplier("aa","ss",new Address("aa","aa","aa","aa","aa"),"aa","aa","aa","aa","aa","aa"),new ArrayList<String>(Arrays.asList("aa"))));
-        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/facility/delete/ab")).andExpect(status().isNotFound()).andReturn().getResponse()
+        String result = mockMvc.
+        perform(MockMvcRequestBuilders.
+        delete("/facility/delete/ab")).
+        andExpect(status().isBadRequest()).
+        andReturn().getResponse()
                 .getContentAsString();
         System.out.println("___________");
         System.out.println(result);
