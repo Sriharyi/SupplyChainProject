@@ -64,8 +64,14 @@ public class FacilityService implements FacilityServiceInterface{
 
     @Override
     public Boolean deleteData(String id) {
-        repo.deleteById(id);
-        return true;
+        try {
+          repo.deleteBy_id(id);
+          return true;
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+          return false;
+        }
     }
 
 }

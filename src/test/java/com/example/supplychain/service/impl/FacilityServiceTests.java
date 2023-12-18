@@ -102,21 +102,20 @@ public class FacilityServiceTests {
         assertNotEquals(facility, result);
     }
 
-    // @Test
-    // public void testThatFacilitydeleteDataWorks() throws Exception{
-    //     Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
-    //     Mockito.when(repo.deleteById("cd")).thenReturn(true);
-    //     Boolean result = service.deleteData("cd");
-    //     assertEquals(facility, result);
-    // }
+    @Test
+    public void testThatFacilitydeleteDataWorks() throws Exception{
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Mockito.when(repo.deleteBy_id("cd")).thenReturn(true);
+        Boolean result = service.deleteData("cd");
+        assertEquals(true, result);
+    }
 
-    // @Test
-    // public void testThatFacilitydeleteDataNotWorks() throws Exception{
-    //     Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
-    //     Mockito.when(repo.deleteById("cd")).thenThrow(RuntimeException.class);
-    //     Boolean result = service.deleteData("cd");
-    //     assertNotEquals(facility, result);
-    // }
-
+    @Test
+    public void testThatFacilitydeleteDataNotWorks() throws Exception{
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Mockito.when(repo.deleteBy_id("cd")).thenThrow(RuntimeException.class);
+        Boolean result = service.deleteData("cd");
+        assertEquals(false, result);
+    }
 
 }
