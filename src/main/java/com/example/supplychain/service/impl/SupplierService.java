@@ -61,15 +61,21 @@ public class SupplierService implements SupplierServiceInterface{
 
     @Override
     public Boolean deleteData(String id) {
-         if(repo.existsById(id))
-         {
-            repo.deleteById(id);
-            return true;
+      Boolean result=false;
+         try {
+            if(repo.existsById(id))
+            {
+               repo.deleteById(id);
+               result = true;
+            }
+            else 
+            {
+               result = false;
+            }
+         } catch (Exception e) {
+            e.printStackTrace();
          }
-         else 
-         {
-            return false;
-         }
+      return  result;
     }
 
 }
