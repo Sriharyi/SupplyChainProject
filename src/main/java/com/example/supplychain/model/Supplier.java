@@ -1,5 +1,7 @@
 package com.example.supplychain.model;
 
+import java.nio.file.Path;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,4 +24,7 @@ public class Supplier {
     private String supplierEmail;
     private String supplierWebsite;
     private String supplierTierNo;
+    private String supplierlogoName;
+    private String supplierlogoType;
+    private String supplierlogoPath;
 }

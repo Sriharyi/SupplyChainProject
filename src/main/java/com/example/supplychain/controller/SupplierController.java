@@ -1,18 +1,24 @@
 package com.example.supplychain.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.service.SupplierServiceInterface;
@@ -98,6 +104,40 @@ public class SupplierController {
            return new ResponseEntity<String>( "Internal error",HttpStatus.BAD_REQUEST);
         }
     }
+
+  @PatchMapping("/update/uploadimg/{id}")
+  public ResponseEntity<?>  updateSupplierLogo(@PathVariable String id ,@RequestParam("image")MultipartFile image) throws IOException{
+    try {
+        return ResponseEntity.ok("Image updated successfully for entity with id: " +  service.updateImage(id, image));
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.badRequest().build();
+    }
+  }     
+
+  @GetMapping("getimage/{id}")
+  public ResponseEntity<?> downloadSupplierLogo(@PathVariable String id) {
+      byte[] imageData = service.downloadImage(id);
+      return ResponseEntity.status(HttpStatus.OK)
+                 .contentType(MediaType.valueOf("image/jpeg"))
+                 .body(imageData);
+  }
+
+  @DeleteMapping("delete/image/{id}")
+  public ResponseEntity<?> updateFiledinSupplier(@PathVariable String id){
+     Boolean result = false;
+     try {
+         result = service.deleteImage(id);
+         if(result)
+         return ResponseEntity.ok("Image deleted successfully for entity ");
+         else
+         return ResponseEntity.notFound().build();
+     } catch (Exception e) {
+        e.printStackTrace();
+         return ResponseEntity.badRequest().build();
+     }
+  }
+  
 }
 
 // SupplierBuilder.builder()
