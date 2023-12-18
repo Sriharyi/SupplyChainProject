@@ -79,6 +79,7 @@ public class SupplierSerivceTest {
         Supplier supplier = Supplier.builder()._id("afgghjhyt").supplierName("sriharyi").build();
 
         Mockito.when(repo.save(Mockito.any(Supplier.class))).thenReturn(supplier);
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(true);
 
         Supplier result = service.updateData(supplier);
 

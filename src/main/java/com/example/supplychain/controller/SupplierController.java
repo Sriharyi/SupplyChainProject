@@ -85,9 +85,11 @@ public class SupplierController {
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteSupplier(@PathVariable String id)
     {
+        Boolean result =false;
         try {
-            if(service.deleteData(id)){
-                    return  new ResponseEntity<String>( "Deleted Successfully",HttpStatus.OK);
+            result = service.deleteData(id);
+            if(result){
+                    return  new ResponseEntity<String>("Deleted Successfully" ,HttpStatus.OK);
             }
             else return new ResponseEntity<String>( "Id not found",HttpStatus.NOT_FOUND);
            

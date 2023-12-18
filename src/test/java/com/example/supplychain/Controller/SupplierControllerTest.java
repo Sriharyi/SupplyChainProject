@@ -113,6 +113,13 @@ public class SupplierControllerTest {
         Assertions.assertThat(result).isEqualTo(exOutput);
     }
 
+    @Test
+    public void testThatSupplierCanNotbeUpdatedThrowsException()
+    {
+
+    }
+
+    
      @Test
     void testDeleteWorks() throws Exception {
 
@@ -134,7 +141,7 @@ public class SupplierControllerTest {
     }
 
     @Test
-    void testDeleteNotWorks() throws Exception {
+    void testDeleteNotWorksWithWrongId() throws Exception {
             
         Mockito.when(service.deleteData(Mockito.anyString())).thenReturn(false);
         String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
@@ -152,8 +159,7 @@ public class SupplierControllerTest {
 
          @Test
     void testDeleteThrowanExceptionWorks() throws Exception {
-            
-        doThrow(new Exception()).when(service.deleteData(Mockito.anyString())).notify();
+        Mockito.when(service.deleteData(Mockito.anyString())).thenThrow(RuntimeException.class);
         String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andReturn().getResponse()
@@ -161,9 +167,7 @@ public class SupplierControllerTest {
         System.out.println("___________");
         System.out.println(result);
         System.out.println("___________");
-
         String expected =  "Internal error";
-        
         assertEquals(result,expected);
         }
 }
