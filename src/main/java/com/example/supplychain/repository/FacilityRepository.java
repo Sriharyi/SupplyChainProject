@@ -7,5 +7,5 @@ import com.example.supplychain.model.Facility;
 
 @Repository
 public interface FacilityRepository extends MongoRepository<Facility,String>{
-
+ Boolean deleteBy_id(String _id);
 }
