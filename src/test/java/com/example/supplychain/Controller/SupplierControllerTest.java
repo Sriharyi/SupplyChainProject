@@ -113,8 +113,15 @@
 //         Assertions.assertThat(result).isEqualTo(exOutput);
 //     }
 
-//      @Test
-//     void testDeleteWorks() throws Exception {
+    @Test
+    public void testThatSupplierCanNotbeUpdatedThrowsException()
+    {
+
+    }
+
+    
+     @Test
+    void testDeleteWorks() throws Exception {
 
        
 //         Mockito.when(service.deleteData(Mockito.anyString())).thenReturn(true);
@@ -133,8 +140,8 @@
 //         assertEquals(result, expected);
 //     }
 
-//     @Test
-//     void testDeleteNotWorks() throws Exception {
+    @Test
+    void testDeleteNotWorksWithWrongId() throws Exception {
             
 //         Mockito.when(service.deleteData(Mockito.anyString())).thenReturn(false);
 //         String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
@@ -150,20 +157,17 @@
 //         assertEquals(result,expected);
 //         }
 
-//          @Test
-//     void testDeleteThrowanExceptionWorks() throws Exception {
-            
-//         doThrow(new Exception()).when(service.deleteData(Mockito.anyString())).notify();
-//         String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
-//         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-//         .andReturn().getResponse()
-//         .getContentAsString();
-//         System.out.println("___________");
-//         System.out.println(result);
-//         System.out.println("___________");
-
-//         String expected =  "Internal error";
-        
-//         assertEquals(result,expected);
-//         }
-// }
+         @Test
+    void testDeleteThrowanExceptionWorks() throws Exception {
+        Mockito.when(service.deleteData(Mockito.anyString())).thenThrow(RuntimeException.class);
+        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/supplier/delete/ab"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andReturn().getResponse()
+        .getContentAsString();
+        System.out.println("___________");
+        System.out.println(result);
+        System.out.println("___________");
+        String expected =  "Internal error";
+        assertEquals(result,expected);
+        }
+}

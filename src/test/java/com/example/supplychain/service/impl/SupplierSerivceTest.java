@@ -78,7 +78,12 @@
 //     public void testThatSuppliercanbeUpdateSuccessfully(){
 //         Supplier supplier = Supplier.builder()._id("afgghjhyt").supplierName("sriharyi").build();
 
+<<<<<<< HEAD
 //         Mockito.when(repo.save(Mockito.any(Supplier.class))).thenReturn(supplier);
+=======
+        Mockito.when(repo.save(Mockito.any(Supplier.class))).thenReturn(supplier);
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(true);
+>>>>>>> 5145e2f217a5197272a802df399373a69564fc5c
 
 //         Supplier result = service.updateData(supplier);
 
