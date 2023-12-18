@@ -111,15 +111,7 @@ public class SupplierControllerTest {
         
         String exOutput = new ObjectMapper().writeValueAsString(expectedOutput);
         Assertions.assertThat(result).isEqualTo(exOutput);
-    }
-
-    @Test
-    public void testThatSupplierCanNotbeUpdatedThrowsException()
-    {
-
-    }
-
-    
+    }    
      @Test
     void testDeleteWorks() throws Exception {
 
