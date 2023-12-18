@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document("facilities")
+@Document("facility")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -23,6 +23,7 @@ public class Facility {
     private String _id;
     private String facilityName;
     private FacilityAddress facilityAddress;
-    @DocumentReference(collection = "suppliers")
+    @DocumentReference(collection = "supplier")
     private Supplier supplierId;
+    private String facilityPhoto;
 }

@@ -42,7 +42,7 @@ public class FacilityControllerTest {
     @Test
     void testThatCanFacilitycanbeGetAllElement() throws Exception {
 
-        Mockito.when(service.getAllFacility()).thenReturn(new ArrayList<Facility>(Arrays.asList(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()))));
+        Mockito.when(service.getAllFacility()).thenReturn(new ArrayList<Facility>(Arrays.asList(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"))));
 
         String result = mockMvc.perform(MockMvcRequestBuilders.get("/facility/select/all")).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
@@ -78,7 +78,7 @@ public class FacilityControllerTest {
     @Test
     void testThatCanFacilitycanbeGetUsingId() throws Exception {
 
-        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()));
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"));
 
         String result = mockMvc.perform(MockMvcRequestBuilders.get("/facility/select/cd")).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
@@ -136,7 +136,7 @@ public class FacilityControllerTest {
 
     @Test
     void testDeleteWorks() throws Exception {
-        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()));
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"));
 
         Mockito.when(service.deleteData("cd")).thenReturn(true);
         // (new Facility("ab","Sai",new Address("aa","aa","aa","aa","aa"), new Supplier("aa","ss",new Address("aa","aa","aa","aa","aa"),"aa","aa","aa","aa","aa","aa"),new ArrayList<String>(Arrays.asList("aa"))));
@@ -171,7 +171,7 @@ public class FacilityControllerTest {
 
     @Test
     void testDeleteNotWorksThrowsException() throws Exception {
-        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()));
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"));
         Mockito.when(service.deleteData("ab")).thenThrow(RuntimeException.class);
         // (new Facility("ab","Sai",new Address("aa","aa","aa","aa","aa"), new Supplier("aa","ss",new Address("aa","aa","aa","aa","aa"),"aa","aa","aa","aa","aa","aa"),new ArrayList<String>(Arrays.asList("aa"))));
         String result = mockMvc.
@@ -192,7 +192,7 @@ public class FacilityControllerTest {
 
     @Test
     public void testThatSupplierCanBeSavedWorks() throws Exception{
-        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(service.saveData(Mockito.any(Facility.class))).thenReturn(facility);
         String result = mockMvc.perform(MockMvcRequestBuilders
                                         .post("/facility/save").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(facility)))
@@ -209,7 +209,7 @@ public class FacilityControllerTest {
 
     @Test
     public void testThatSupplierCanBeSavedNotWorksThrowsException() throws Exception{
-        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(service.saveData(Mockito.any(Facility.class))).thenThrow(RuntimeException.class);
         String result = mockMvc.perform(MockMvcRequestBuilders
                                         .post("/facility/save").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(facility)))
@@ -227,7 +227,7 @@ public class FacilityControllerTest {
     @Test
     public void testThatFacilityCanbeUpdatedSuccessfully() throws JsonProcessingException, UnsupportedEncodingException, Exception
     {
-        Facility expectedOutput = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility expectedOutput = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         
         Mockito.when(service.updateData(Mockito.any(Facility.class))).thenReturn(expectedOutput);
 

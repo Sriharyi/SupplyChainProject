@@ -38,7 +38,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilityCanbeCreated() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.save(facility)).thenReturn(facility);
         Facility result = service.saveData(facility);
         assertEquals(facility, result);
@@ -46,7 +46,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilityCanNotbeCreated() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.save(facility)).thenThrow(RuntimeException.class);
         Facility result = service.saveData(facility);
         assertNotEquals(facility, result);
@@ -55,7 +55,7 @@ public class FacilityServiceTests {
     @Test
     public void testThatFacilitygetAllFacilityWorks() throws Exception{
         List<Facility> facility=new ArrayList<Facility>();
-        facility.add(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()));
+        facility.add(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"));
         Mockito.when(repo.findAll()).thenReturn(facility);
         List<Facility> result = service.getAllFacility();
         assertEquals(facility, result);
@@ -64,7 +64,7 @@ public class FacilityServiceTests {
     @Test
     public void testThatFacilitygetAllFacilityNotWorks() throws Exception{
         List<Facility> facility=new ArrayList<Facility>();
-        facility.add(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build()));
+        facility.add(new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa"));
         Mockito.when(repo.findAll()).thenThrow(RuntimeException.class);
         List<Facility> result = service.getAllFacility();
         assertNotEquals(facility, result);
@@ -72,7 +72,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilitygetByIdWorks() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.findById("cd")).thenReturn(Optional.of(facility));
         Facility result = service.getById("cd");
         assertEquals(facility, result);
@@ -80,7 +80,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilitygetByIdNotWorks() throws Exception{
-         Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+         Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.findById("cd")).thenThrow(RuntimeException.class);
         Facility result = service.getById("cd");
         assertNotEquals(facility, result);
@@ -88,7 +88,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilityupdateDataWorks() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.save(facility)).thenReturn(facility);
         Facility result = service.updateData(facility);
         assertEquals(facility, result);
@@ -96,7 +96,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilityupdateDataNotWorks() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.save(facility)).thenThrow(RuntimeException.class);
         Facility result = service.updateData(facility);
         assertNotEquals(facility, result);
@@ -104,7 +104,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilitydeleteDataWorks() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.deleteBy_id("cd")).thenReturn(true);
         Boolean result = service.deleteData("cd");
         assertEquals(true, result);
@@ -112,7 +112,7 @@ public class FacilityServiceTests {
 
     @Test
     public void testThatFacilitydeleteDataNotWorks() throws Exception{
-        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build());
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
         Mockito.when(repo.deleteBy_id("cd")).thenThrow(RuntimeException.class);
         Boolean result = service.deleteData("cd");
         assertEquals(false, result);
