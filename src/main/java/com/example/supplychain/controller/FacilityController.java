@@ -113,16 +113,15 @@ public class FacilityController {
             if(file.getContentType()==null)
             return new ResponseEntity<>("Please Insert a file", HttpStatus.BAD_REQUEST);
             Facility facility=service.getById(id);
-            String a=file.getContentType().toString();
-            if(a.startsWith("image")){
+            String a=file.getContentType();
+            if(a!=null && a.startsWith("image")){
             if(service.uploadImageToDB(facility, file))
             return new ResponseEntity<>(true, HttpStatus.OK);
             else
             return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
             }else
-            return new ResponseEntity<String>(file.getContentType().toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(file.getContentType(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }
@@ -137,11 +136,9 @@ public class FacilityController {
 				.contentType(MediaType.valueOf("image/jpeg"))
 				.body(service.downloadImage(facility));
             }
-            // return new ResponseEntity<>(, HttpStatus.OK);
             else
             return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }
@@ -156,7 +153,6 @@ public class FacilityController {
             else
             return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }

@@ -43,7 +43,6 @@ public class SupplierController {
             
             return new ResponseEntity<Supplier>(service.saveData(supplier),HttpStatus.CREATED);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<Supplier>(HttpStatus.BAD_REQUEST);
         }
@@ -56,7 +55,6 @@ public class SupplierController {
         try {
             return new ResponseEntity<List<Supplier>>( service.getAllSupplier(),HttpStatus.OK);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
         }
@@ -69,7 +67,6 @@ public class SupplierController {
         try {
             return new ResponseEntity<Supplier>( service.getById(id),HttpStatus.OK);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
         }
@@ -104,15 +101,26 @@ public class SupplierController {
         }
     }
 
-  @PatchMapping("/update/uploadimg/{id}")
-  public ResponseEntity<?>  updateSupplierLogo(@PathVariable String id ,@RequestParam("image")MultipartFile image) throws IOException{
-    try {
-        return ResponseEntity.ok("Image updated successfully for entity with id: " +  service.updateImage(id, image));
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.badRequest().build();
-    }
-  }     
+    @PatchMapping("/update/uploadimg/{id}")
+    public ResponseEntity<?>  updateSupplierLogo(@PathVariable String id ,@RequestParam("image")MultipartFile image) throws IOException{
+      try {
+          Boolean result = false;
+          if(service.getById(id)!=null)
+          {
+              result = service.updateImage(id, image);
+              if(result)
+               return ResponseEntity.ok("Image updated successfully for entity with id: "+id);
+              else
+                return new ResponseEntity<String>( "Image file only accepted",HttpStatus.BAD_REQUEST);
+          }else
+          {
+             return new ResponseEntity<String>( "Id not found",HttpStatus.NOT_FOUND);
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+          return ResponseEntity.badRequest().build();
+      }
+    }    
 
   @GetMapping("getimage/{id}")
   public ResponseEntity<?> downloadSupplierLogo(@PathVariable String id) {

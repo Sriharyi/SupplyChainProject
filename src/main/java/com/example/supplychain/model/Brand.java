@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document("brand")
+@Document("brands")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
