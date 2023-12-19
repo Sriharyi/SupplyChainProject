@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Document("brand")
 @Data
 @NoArgsConstructor
@@ -19,5 +18,5 @@ public class Brand {
     private String brandName;
     private String parentCompany;
     private String website;
-
+    private String path = "";
 }
