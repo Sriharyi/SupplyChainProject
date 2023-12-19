@@ -3,6 +3,7 @@ package com.example.supplychain.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,8 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Facility;
 import com.example.supplychain.model.FacilityAddress;
@@ -117,5 +119,35 @@ public class FacilityServiceTests {
         Boolean result = service.deleteData("cd");
         assertEquals(false, result);
     }
+
+    @Test
+    public void testThatUploadImageWorks() throws Exception{
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
+        String name = "file.txt";
+        String originalFileName = "file.txt";
+        String contentType = "text/plain";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.updateData(facility)).thenReturn(facility);
+        Boolean result = service.uploadImageToDB(facility,file);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testThatUploadImageNotWorks() throws Exception{
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
+        String name = "file.txt";
+        String originalFileName = "file.txt";
+        String contentType = "text/plain";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.updateData(facility)).thenThrow(RuntimeException.class);
+        Boolean result = service.uploadImageToDB(facility,file);
+        assertEquals(false, result);
+    }
+
+   
+    
+
 
 }

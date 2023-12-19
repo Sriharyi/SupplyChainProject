@@ -109,13 +109,19 @@ public class FacilityController {
     }
 
     @PutMapping("updateImage/{id}")
-    public ResponseEntity<Boolean> uploadImage(@PathVariable String id, @RequestParam("image") MultipartFile file) {
+    public ResponseEntity<?> uploadImage(@PathVariable String id, @RequestParam("image") MultipartFile file) {
         try {
+            if(file.getContentType()==null)
+            return new ResponseEntity<>("Please Insert a file", HttpStatus.BAD_REQUEST);
             Facility facility=service.getById(id);
+            String a=file.getContentType().toString();
+            if(a.startsWith("image")){
             if(service.uploadImageToDB(facility, file))
-            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
             else
             return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+            }else
+            return new ResponseEntity<String>(file.getContentType().toString(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -127,10 +133,11 @@ public class FacilityController {
     public ResponseEntity<?> getImage(@PathVariable String id) {
         try {
             Facility facility=service.getById(id);
-            if(facility!= new Facility())
-            return ResponseEntity.status(HttpStatus.OK)
+            if(!facility.equals(new Facility())){            
+                return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaType.valueOf("image/jpeg"))
 				.body(service.downloadImage(facility));
+            }
             // return new ResponseEntity<>(, HttpStatus.OK);
             else
             return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);

@@ -14,10 +14,14 @@ import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Addre
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.multipart.MultipartFile;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.example.supplychain.controller.FacilityController;
@@ -256,4 +260,101 @@ public class FacilityControllerTest {
         String exOutput = new ObjectMapper().writeValueAsString(new Facility());
         Assertions.assertThat(result).isEqualTo(exOutput);
     }
+
+    @Test
+    void testThatCanImagecanbeGetUsingId() throws Exception {
+
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+         Mockito.when(service.getById(Mockito.anyString())).thenReturn(facility);
+        Mockito.when(service.downloadImage(facility)).thenReturn(new byte[]{});
+
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/facility/downloadImage/cd")).andExpect(status().isOk()).andReturn().getResponse()
+                .getContentAsString();
+        System.out.println("___________");
+        System.out.println(result);
+        System.out.println("___________");
+
+
+    }
+
+    @Test
+    void testThatCanImagecanbeGetUsingIdThrowsException() throws Exception {
+
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+         Mockito.when(service.getById(Mockito.anyString())).thenReturn(facility);
+        Mockito.when(service.downloadImage(facility)).thenThrow(RuntimeException.class);
+
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/facility/downloadImage/cd")).andExpect(status().isBadRequest()).andReturn().getResponse()
+                .getContentAsString();
+        System.out.println("___________");
+        System.out.println(result);
+        System.out.println("___________");
+
+    }
+
+    @Test
+    void testThatCanImagecanNotbeGetUsingId() throws Exception {
+
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+         Mockito.when(service.getById(Mockito.anyString())).thenReturn(new Facility());
+
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/facility/downloadImage/cd")).andExpect(status().isNotFound()).andReturn().getResponse()
+                .getContentAsString();
+        System.out.println("___________");
+        System.out.println(result);
+        System.out.println("___________");
+
+    }
+
+    @Test
+    public void testThatImageUploadsWork() throws JsonProcessingException, UnsupportedEncodingException, Exception
+    {
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+        String name = "image";
+        String originalFileName = "img.jpg";
+        String contentType = "image/jpg";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(facility);
+        Mockito.when(service.uploadImageToDB(Mockito.any(),Mockito.any(MultipartFile.class))).thenReturn(true);
+        String result = mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/facility/updateImage/cd")
+                                        .file(new MockMultipartFile("image",originalFileName,contentType,content)))
+                                        .andExpect(MockMvcResultMatchers.status().isOk())
+                                        .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void testThatImageUploadsNotWork() throws JsonProcessingException, UnsupportedEncodingException, Exception
+    {
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+        String name = "image";
+        String originalFileName = "img.jpg";
+        String contentType = "image/jpg";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(facility);
+        Mockito.when(service.uploadImageToDB(Mockito.any(),Mockito.any(MultipartFile.class))).thenReturn(false);
+        String result = mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/facility/updateImage/cd")
+                                        .file(new MockMultipartFile("image",originalFileName,contentType,content)))
+                                        .andExpect(MockMvcResultMatchers.status().isNotFound())
+                                        .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void testThatImageUploadsThrowsException() throws JsonProcessingException, UnsupportedEncodingException, Exception
+    {
+        Facility facility = new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"D:/SupplyChainProject/src/main/resources/images/facilitiesImage/WhatsApp Image 2023-12-13 at 6.51.39 PM.jpeg");
+        String name = "image";
+        String originalFileName = "img.jpg";
+        String contentType = "image/jpg";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.getById(Mockito.anyString())).thenReturn(facility);
+        Mockito.when(service.uploadImageToDB(Mockito.any(),Mockito.any(MultipartFile.class))).thenThrow(RuntimeException.class);
+        String result = mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT,"/facility/updateImage/cd")
+                                        .file(new MockMultipartFile("image",originalFileName,contentType,content)))
+                                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                        .andReturn().getResponse().getContentAsString();
+    }
+    
 }
