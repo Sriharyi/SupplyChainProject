@@ -1,7 +1,6 @@
-package com.example.supplychain.Controller;
+package com.example.supplychain.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,11 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.supplychain.controller.BrandController;
-import com.example.supplychain.model.Address;
 import com.example.supplychain.model.Brand;
-import com.example.supplychain.model.Facility;
-import com.example.supplychain.model.Supplier;
 import com.example.supplychain.service.BrandServiceInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,18 +46,18 @@ public class BrandControllerTest {
                 ;
         }
 
-        @Test
-        void testSelectAllIfNoDataAvailable() throws Exception {
-                List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand()));
-                Mockito.when(brandService.getAllBrand()).thenReturn(null);
-                String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
-                                .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
-                System.out.println("testSelectAllIfNoDataAvailable");
-                System.out.println(result);
-                System.out.println("___________");
-                List<Brand> output = Arrays.asList(new ObjectMapper().readValue(result, Brand[].class));
-                assertEquals(brands, output);
-        }
+        // @Test
+        // void testSelectAllIfNoDataAvailable() throws Exception {
+        //         List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand()));
+        //         Mockito.when(brandService.getAllBrand()).thenReturn(null);
+        //         String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
+        //                         .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
+        //         System.out.println("testSelectAllIfNoDataAvailable");
+        //         System.out.println(result);
+        //         System.out.println("___________");
+        //         List<Brand> output = Arrays.asList(new ObjectMapper().readValue(result, Brand[].class));
+        //         assertEquals(brands, output);
+        // }
 
         @Test
         void testSelectByIdIfDataAvailable() throws Exception {

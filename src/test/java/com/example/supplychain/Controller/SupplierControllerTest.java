@@ -1,7 +1,6 @@
-package com.example.supplychain.Controller;
+package com.example.supplychain.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.UnsupportedEncodingException;
 
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.supplychain.controller.SupplierController;
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.service.SupplierServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;

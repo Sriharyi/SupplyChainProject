@@ -1,6 +1,7 @@
-package com.example.supplychain.Controller;
+package com.example.supplychain.controller;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -22,11 +22,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.example.supplychain.controller.FacilityController;
-import com.example.supplychain.model.FacilityAddress;
 import com.example.supplychain.model.Facility;
+import com.example.supplychain.model.FacilityAddress;
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.service.FacilityServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
