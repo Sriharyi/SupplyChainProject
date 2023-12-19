@@ -1,7 +1,7 @@
 package com.example.supplychain.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +25,7 @@ public class BrandServiceTest {
     public void testThatBrandCanbeCreated() throws Exception {
         Brand brand = new Brand("cd", "as", "ad", "aa", "sd");
         Mockito.when(repo.save(brand)).thenReturn(brand);
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(false);
         Brand result = service.saveData(brand);
         assertEquals(brand, result);
     }
@@ -32,8 +33,16 @@ public class BrandServiceTest {
     @Test
     public void testThatBrandCanNotbeCreated() throws Exception {
         Brand brand = new Brand("cd", "as", "ad", "aa", "sd");
-        Mockito.when(repo.save(Mockito.<Brand>any())).thenThrow(RuntimeException.class);
+        Mockito.when(repo.existsById(Mockito.anyString())).thenReturn(true);
         Brand result = service.saveData(brand);
-        assertNotEquals(brand, result);
+        assertNull(result);
+    }
+
+    @Test
+    public void testThatBrandCanBeUpdated() throws Exception {
+        Brand brand = new Brand("cd", "as", "ad", "aa", "sd");
+        Mockito.when(repo.save(brand)).thenReturn(brand);
+        Brand result = service.updateBrand(brand);
+        assertEquals(brand, result);
     }
 }

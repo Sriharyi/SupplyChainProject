@@ -9,19 +9,19 @@ import com.example.supplychain.model.Brand;
 
 public interface BrandServiceInterface {
 
-    Brand saveData(Brand brand);
+    Brand saveData(Brand brand) throws Exception;
 
-    void updateBrand(Brand brand);
+    Brand updateBrand(Brand brand) throws Exception;
 
-    Boolean deleteData(String id);
+    String deleteData(String id) throws Exception;
 
-    Brand getById(String id);
+    Brand getById(String id) throws Exception;
 
-    List<Brand> getAllBrand();
+    List<Brand> getAllBrand() throws Exception;
 
-    String updateImagePath(String id, MultipartFile file) throws IOException;
+    String updateImagePath(String id, MultipartFile file) throws Exception;
 
-    void deleteImagePath(String id, String imagename) throws IOException;
+    void deleteImagePath(String id, String imagename) throws Exception;
 
     byte[] getImage(String id) throws IOException;
 

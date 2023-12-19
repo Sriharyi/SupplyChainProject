@@ -32,7 +32,7 @@ public class BrandControllerTest {
 
         @Test
         void testSelectAllIfDataAvailable() throws Exception {
-                List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand("abc", "bcd", "cde", "asd", "efg")));
+                List<Brand> brands = new ArrayList<Brand>(Arrays.asList());
                 Mockito.when(brandService.getAllBrand())
                                 .thenReturn(brands);
                 String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
@@ -48,7 +48,7 @@ public class BrandControllerTest {
 
         @Test
         void testSelectAllIfNoDataAvailable() throws Exception {
-                List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand()));
+                List<Brand> brands = new ArrayList<Brand>();
                 Mockito.when(brandService.getAllBrand()).thenReturn(null);
                 String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
                                 .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
@@ -60,9 +60,24 @@ public class BrandControllerTest {
         }
 
         @Test
+        void testSelectAllIfThrowsException() throws Exception {
+                List<Brand> brands = new ArrayList<Brand>();
+                Mockito.when(brandService.getAllBrand()).thenThrow(RuntimeException.class);
+                String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
+                                .andExpect(status().isInternalServerError()).andReturn().getResponse()
+                                .getContentAsString();
+                System.out.println("testSelectAllIfThrowsException");
+                System.out.println(result);
+                System.out.println("___________");
+                List<Brand> output = Arrays.asList(new ObjectMapper().readValue(result,
+                                Brand[].class));
+                assertEquals(brands, output);
+        }
+
+        @Test
         void testSelectByIdIfDataAvailable() throws Exception {
                 Brand brand = new Brand("abc", "bcd", "cde", "efg", "skfj");
-                Mockito.when(brandService.getById("abc"))
+                Mockito.when(brandService.getById(Mockito.anyString()))
                                 .thenReturn(brand);
                 String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/abc"))
                                 .andExpect(status().isOk())
@@ -77,7 +92,7 @@ public class BrandControllerTest {
         @Test
         void testSelectByIdIfDataNotAvailable() throws Exception {
                 Brand brand = new Brand();
-                Mockito.when(brandService.getById("abc"))
+                Mockito.when(brandService.getById(Mockito.anyString()))
                                 .thenReturn(null);
                 String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/abc"))
                                 .andExpect(status().isNotFound())
@@ -90,20 +105,81 @@ public class BrandControllerTest {
         }
 
         @Test
-        void testDeleteIfDataNotAvailable() throws Exception {
-
-                Mockito.when(brandService.deleteData(Mockito.anyString())).thenReturn(true);
-                String result = mockMvc.perform(MockMvcRequestBuilders.delete("/brand/delete/id"))
-                                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                                .andExpect(MockMvcResultMatchers.content().string("Id not found"))
-                                .andReturn().getResponse()
-                                .getContentAsString();
-                System.out.println("testDeleteIfDataNotAvailable");
+        void testSelectByIdIfThrowsException() throws Exception {
+                Brand brand = new Brand();
+                Mockito.when(brandService.getById("abc"))
+                                .thenThrow(RuntimeException.class);
+                String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/abc"))
+                                .andExpect(status().isInternalServerError())
+                                .andReturn().getResponse().getContentAsString();
+                System.out.println("testSelectByIdIfDataNotAvailable");
                 System.out.println(result);
                 System.out.println("___________");
+                Brand output = new ObjectMapper().readValue(result, Brand.class);
+                assertEquals(brand, output);
+        }
 
-                String expected = "Id not found";
-                assertEquals(result, expected);
+        @Test
+        void testUpdateBrandIfDataAvailable() throws Exception {
+                Brand brand = new Brand("abc", "bcd", "cde", "efg", "skfj");
+                Mockito.when(brandService.getById("abc"))
+                                .thenReturn(brand);
+                Mockito.when(brandService.updateBrand(brand)).thenReturn(brand);
+
+                String result = mockMvc.perform(MockMvcRequestBuilders
+                                .put("/brand/update").contentType(MediaType.APPLICATION_JSON)
+                                .content(new ObjectMapper().writeValueAsString(brand)))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+
+                System.out.println("testUpdateBrandIfDataAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+                Brand output = new ObjectMapper().readValue(result, Brand.class);
+                assertEquals(brand, output);
+        }
+
+        @Test
+        void testUpdateBrandIfDataNotAvailable() throws Exception {
+                Brand brand = new Brand("abc", "bcd", "cde", "efg", "skfj");
+                Brand expectedOutput = new Brand();
+                Mockito.when(brandService.getById("abc"))
+                                .thenReturn(null);
+
+                String result = mockMvc.perform(MockMvcRequestBuilders
+                                .put("/brand/update").contentType(MediaType.APPLICATION_JSON)
+                                .content(new ObjectMapper().writeValueAsString(brand)))
+                                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+
+                System.out.println("testUpdateBrandIfDataNotAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+                Brand output = new ObjectMapper().readValue(result, Brand.class);
+                assertEquals(expectedOutput, output);
+        }
+
+        @Test
+        void testUpdateBrandIfThrowsException() throws Exception {
+                Brand brand = new Brand("abc", "bcd", "cde", "efg", "skfj");
+                Brand expectedOutput = new Brand();
+                Mockito.when(brandService.getById("abc"))
+                                .thenThrow(RuntimeException.class);
+
+                String result = mockMvc.perform(MockMvcRequestBuilders
+                                .put("/brand/update").contentType(MediaType.APPLICATION_JSON)
+                                .content(new ObjectMapper().writeValueAsString(brand)))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+
+                System.out.println("testUpdateBrandIfThrowsException");
+                System.out.println(result);
+                System.out.println("___________");
+                Brand output = new ObjectMapper().readValue(result, Brand.class);
+                assertEquals(expectedOutput, output);
         }
 
         @Test
@@ -131,7 +207,29 @@ public class BrandControllerTest {
         }
 
         @Test
-        public void testInsertBrandIfDataNotInserted() throws Exception {
+        public void testInsertBrandIfDataAlreadyAvailable() throws Exception {
+
+                Brand brand = new Brand();
+
+                Mockito.when(brandService.saveData(Mockito.any(Brand.class))).thenReturn(null);
+
+                String result = mockMvc.perform(MockMvcRequestBuilders
+                                .post("/brand/save").contentType(MediaType.APPLICATION_JSON)
+                                .content(new ObjectMapper().writeValueAsString(brand)))
+                                .andExpect(MockMvcResultMatchers.status().isNotAcceptable())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+                System.out.println("___________");
+                System.out.println(result);
+                System.out.println("___________");
+
+                Brand actualOutput = new ObjectMapper().readValue(result, Brand.class);
+
+                assertEquals(brand, actualOutput);
+        }
+
+        @Test
+        public void testInsertBrandIfThrowsException() throws Exception {
 
                 Brand brand = new Brand("adc", "cde", "sd", "sdsf", "asd");
                 Mockito.when(brandService.saveData(Mockito.any(Brand.class))).thenThrow(RuntimeException.class);
@@ -146,5 +244,57 @@ public class BrandControllerTest {
                 System.out.println("___________");
 
                 assertNotEquals(brand, result);
+        }
+
+        @Test
+        void testDeleteIfDataAvailable() throws Exception {
+                Brand brand = new Brand("asd", "adf", "add", "sfd", "asd");
+                Mockito.when(brandService.getById(Mockito.anyString())).thenReturn(brand);
+                Mockito.when(brandService.deleteData(Mockito.anyString())).thenReturn("Deleted Successfully");
+
+                String result = mockMvc.perform(MockMvcRequestBuilders.delete("/brand/delete/id"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+                System.out.println("testDeleteIfDataNotAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+
+                String expected = "Deleted Successfully";
+                assertEquals(result, expected);
+        }
+
+        @Test
+        void testDeleteIfDataNotAvailable() throws Exception {
+
+                Mockito.when(brandService.deleteData(Mockito.anyString())).thenReturn("Id not found");
+                // Mockito.when(brandService.getById(Mockito.anyString())).thenReturn(null);
+                String result = mockMvc.perform(MockMvcRequestBuilders.delete("/brand/delete/id"))
+                                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+                System.out.println("testDeleteIfDataNotAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+
+                String expected = "Id not found";
+                assertEquals(result, expected);
+        }
+
+        @Test
+        void testDeleteIfThrowsException() throws Exception {
+
+                Mockito.when(brandService.getById(Mockito.anyString())).thenThrow(RuntimeException.class);
+                Mockito.when(brandService.deleteData(Mockito.anyString())).thenThrow(RuntimeException.class);
+                String result = mockMvc.perform(MockMvcRequestBuilders.delete("/brand/delete/id"))
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andReturn().getResponse()
+                                .getContentAsString();
+                System.out.println("testDeleteIfDataNotAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+
+                String expected = "Internal error";
+                assertEquals(result, expected);
         }
 }
