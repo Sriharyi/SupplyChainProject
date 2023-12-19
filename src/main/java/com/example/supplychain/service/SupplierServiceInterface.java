@@ -1,6 +1,9 @@
 package com.example.supplychain.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Supplier;
 
@@ -15,5 +18,11 @@ public interface SupplierServiceInterface {
     Supplier updateData(Supplier supplier);
 
     Boolean deleteData(String id);
+
+    Supplier updateImage(String id, MultipartFile image);
+
+    byte[] downloadImage(String id) ;
+
+    Boolean deleteImage(String id);
 
 }

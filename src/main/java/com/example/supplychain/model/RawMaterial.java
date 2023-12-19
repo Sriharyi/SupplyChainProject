@@ -1,7 +1,8 @@
 package com.example.supplychain.model;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -9,12 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
-
-@Document("rawmaterial")
+@Document("rawMaterials")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,26 +18,21 @@ public class RawMaterial {
 
     @Id
     private String _id;
-    private String rawMaterialName;
-    private String rawMaterialNumber;
-    private String rawMaterialUniqueId;
+
+    private String rawMaterialName; 
+
     private String rawMaterialType;
-    @DocumentReference(collection = "facility")
+    
+    @DocumentReference(collection = "facilities")
     private Facility facilityId;
+
+    @DocumentReference(collection = "suppliers")
+    private Supplier Supplier;
+
+    @DocumentReference(collection = "rawMaterials")
+    private ArrayList<RawMaterial>  rawMaterials;
+  
     private ArrayList<MaterialComposition> materialComposition;
-    private ArrayList<String> Certificates;
-    private ObjectId brandId;
-    private ArrayList<ObjectId> baseMaterialId;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    private class MaterialComposition{
-        private String material;
-        private float percentage;
-
-    }
-
-
+   
 }
 

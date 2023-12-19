@@ -1,18 +1,25 @@
 package com.example.supplychain.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Facility;
 import com.example.supplychain.service.FacilityServiceInterface;
@@ -52,7 +59,7 @@ public class FacilityController {
         } catch (Exception e) {
             
             e.printStackTrace();
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ArrayList<Facility>(Arrays.asList(new Facility())),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -61,15 +68,16 @@ public class FacilityController {
     @GetMapping("/select/{id}")
     public ResponseEntity<Facility> selectById(@PathVariable("id")String id){
         try {
-            if(service.getById(id).equals(null))
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            System.out.println(service.getAllFacility());
+            if(service.getById(id)==null)
+            return new ResponseEntity<>(new Facility(),HttpStatus.NOT_FOUND);
             else
             return new ResponseEntity<Facility>( service.getById(id),HttpStatus.OK);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>( new Facility(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -82,7 +90,7 @@ public class FacilityController {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Facility(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -93,8 +101,6 @@ public class FacilityController {
             if(service.getById(id)!=null)
             return new ResponseEntity<>(service.deleteData(id),HttpStatus.OK);
             else return new ResponseEntity<>(false,HttpStatus.NOT_FOUND) ;
-            
-            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -102,6 +108,59 @@ public class FacilityController {
         }
     }
 
+    @PutMapping("updateImage/{id}")
+    public ResponseEntity<?> uploadImage(@PathVariable String id, @RequestParam("image") MultipartFile file) {
+        try {
+            if(file.getContentType()==null)
+            return new ResponseEntity<>("Please Insert a file", HttpStatus.BAD_REQUEST);
+            Facility facility=service.getById(id);
+            String a=file.getContentType().toString();
+            if(a.startsWith("image")){
+            if(service.uploadImageToDB(facility, file))
+            return new ResponseEntity<>(true, HttpStatus.OK);
+            else
+            return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+            }else
+            return new ResponseEntity<String>(file.getContentType().toString(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    @GetMapping("downloadImage/{id}")
+    public ResponseEntity<?> getImage(@PathVariable String id) {
+        try {
+            Facility facility=service.getById(id);
+            if(!facility.equals(new Facility())){            
+                return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaType.valueOf("image/jpeg"))
+				.body(service.downloadImage(facility));
+            }
+            // return new ResponseEntity<>(, HttpStatus.OK);
+            else
+            return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("deleteImage/{id}")
+    public ResponseEntity<?> deleteImage(@PathVariable String id) {
+        try {
+            Facility facility=service.getById(id);
+            if(facility!= new Facility())
+            return new ResponseEntity<>(service.deleteImage(facility), HttpStatus.OK);
+            else
+            return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

@@ -2,6 +2,8 @@ package com.example.supplychain.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.supplychain.model.Facility;
 
 public interface FacilityServiceInterface {
@@ -15,6 +17,12 @@ public interface FacilityServiceInterface {
     Facility updateData(Facility facility);
 
     Boolean deleteData(String id);
+
+    Boolean uploadImageToDB(Facility facility,MultipartFile file);
+
+    byte[] downloadImage(Facility facility);
+
+    Boolean deleteImage(Facility facility);
 
 
 }
