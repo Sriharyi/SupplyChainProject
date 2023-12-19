@@ -3,11 +3,12 @@ package com.example.supplychain.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.imaging.Imaging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,8 +22,8 @@ public class SupplierService implements SupplierServiceInterface{
     @Autowired
     private SupplierRepository repo;
 
-    @Value("${upload-dir}")
-    private String uploadDir;
+    
+    private final String UPLOAD_DIR = "/home/sriharyi/Documents/InternTraining/BackEnd/Spring-boot/Projects/SupplyChain/SupplyChainProject/src/main/resources/images/suppliersImage/";
 
     @Override
     public Supplier getById(String id) {
@@ -32,7 +33,7 @@ public class SupplierService implements SupplierServiceInterface{
       } catch (Exception e) {
          e.printStackTrace();
       }
-       return result.isPresent()?result.get():result.orElse(result.get());
+       return result.get();
     }
 
     @Override
@@ -86,29 +87,58 @@ public class SupplierService implements SupplierServiceInterface{
       return  result;
     }
 
+
    @Override
-   public Supplier updateImage(String id, MultipartFile image) {
-        Supplier entity = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entity not found with id: " + id));
-
-        // Save the image file
-        String imagePath = saveImage(image);
-        entity.setSupplierlogoName(image.getOriginalFilename());
-        entity.setSupplierlogoPath(imagePath);
-        entity.setSupplierlogoType(image.getContentType());
-        return repo.save(entity);
+   public Boolean updateImage(String id, MultipartFile image) {
+      Supplier entity = repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Entity not found with id: " + id));
+      Boolean result = false;
+      try {
+         if (isImage(image)) {
+            String imagePath = saveImage(image);
+            entity.setSupplierlogoName(image.getOriginalFilename());
+            entity.setSupplierlogoPath(imagePath);
+            entity.setSupplierlogoType(image.getContentType());
+            repo.save(entity);
+            result = true;
+        }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+      return result;
    }
-
-
-    private String saveImage(MultipartFile imageFile) {
+   private Boolean isImage(MultipartFile multipartFile) {
         try {
-            String filepath = uploadDir+imageFile.getOriginalFilename();
-            imageFile.transferTo(new File(filepath));
-            return filepath;
+            File file = convertMultipartFileToFile(multipartFile);
+            return Imaging.hasImageFileExtension(file);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save image", e);
+            return false;
         }
     }
+
+    public File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
+      File file = new File(multipartFile.getOriginalFilename());
+      Files.copy(multipartFile.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      return file;
+  }
+
+
+   // private boolean isSupportedContentType(String contentType) {
+   //    return contentType.equals("image/png")
+   //          || contentType.equals("image/jpg")
+   //          || contentType.equals("image/jpeg");
+   // }
+
+   private String saveImage(MultipartFile imageFile) {
+      try {
+         String filepath = UPLOAD_DIR + imageFile.getOriginalFilename();
+         imageFile.transferTo(new File(filepath));
+         return filepath;
+      } catch (IOException e) {
+         throw new RuntimeException("Failed to save image", e);
+      }
+   }
+
 
    @Override
    public byte[] downloadImage(String id) {

@@ -18,7 +18,7 @@ public interface SupplierServiceInterface {
 
     Boolean deleteData(String id);
 
-    Supplier updateImage(String id, MultipartFile image);
+    Boolean updateImage(String id, MultipartFile image);
 
     byte[] downloadImage(String id) ;
 
