@@ -3,9 +3,8 @@ package com.example.supplychain.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;

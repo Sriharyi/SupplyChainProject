@@ -3,9 +3,7 @@ package com.example.supplychain.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,19 +13,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Facility;
 import com.example.supplychain.model.FacilityAddress;
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.repository.FacilityRepository;
-import com.example.supplychain.service.FacilityServiceInterface;
-import com.example.supplychain.service.impl.FacilityService;
 
 
 @ExtendWith(MockitoExtension.class)
