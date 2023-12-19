@@ -86,7 +86,7 @@ public class BrandController {
     public ResponseEntity<List<Brand>> selectAll() {
         try {
             List<Brand> brands = service.getAllBrand();
-            if (brands.isEmpty()) {
+            if (brands == null) {
                 return new ResponseEntity<>(new ArrayList<Brand>(Arrays.asList(new Brand())), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(brands, HttpStatus.OK);
