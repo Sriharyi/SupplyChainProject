@@ -46,18 +46,18 @@ public class BrandControllerTest {
                 ;
         }
 
-        // @Test
-        // void testSelectAllIfNoDataAvailable() throws Exception {
-        //         List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand()));
-        //         Mockito.when(brandService.getAllBrand()).thenReturn(null);
-        //         String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
-        //                         .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
-        //         System.out.println("testSelectAllIfNoDataAvailable");
-        //         System.out.println(result);
-        //         System.out.println("___________");
-        //         List<Brand> output = Arrays.asList(new ObjectMapper().readValue(result, Brand[].class));
-        //         assertEquals(brands, output);
-        // }
+        @Test
+        void testSelectAllIfNoDataAvailable() throws Exception {
+                List<Brand> brands = new ArrayList<Brand>(Arrays.asList(new Brand()));
+                Mockito.when(brandService.getAllBrand()).thenReturn(null);
+                String result = mockMvc.perform(MockMvcRequestBuilders.get("/brand/select/all"))
+                                .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
+                System.out.println("testSelectAllIfNoDataAvailable");
+                System.out.println(result);
+                System.out.println("___________");
+                List<Brand> output = Arrays.asList(new ObjectMapper().readValue(result, Brand[].class));
+                assertEquals(brands, output);
+        }
 
         @Test
         void testSelectByIdIfDataAvailable() throws Exception {
