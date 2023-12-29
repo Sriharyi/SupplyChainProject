@@ -11,7 +11,7 @@ public class LoginService {
     public String generateToken(String username, String pwd) {
         Claims claims = Jwts.claims().setSubject(username);
         String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256,
-                "*U(8hj908ns98daniasudfniawur97q2e7r2934892rnu213rn09217349782190348y12").compact();
+                "ur97q2e7r2934892rnu213rn09217349782190348y12").compact();
         return token;
     }
 

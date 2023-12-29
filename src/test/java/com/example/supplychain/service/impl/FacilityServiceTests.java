@@ -122,6 +122,7 @@ public class FacilityServiceTests {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // @Test
     // public void testThatUploadImageWorks() throws Exception{
     // Facility facility=new Facility("cd","Sai",new
@@ -165,6 +166,21 @@ public class FacilityServiceTests {
         assertEquals(true, result);
     }
 
+=======
+    @Test
+    public void testThatUploadImageWorks() throws Exception{
+        Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
+        String name = "file.txt";
+        String originalFileName = "file.txt";
+        String contentType = "text/plain";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Mockito.when(service.updateData(facility)).thenReturn(facility);
+        Boolean result = service.uploadImageToDB(facility,file);
+        assertEquals(true, result);
+    }
+
+>>>>>>> parent of ef7c64e (authentication)
     @Test
     public void testThatUploadImageNotWorks() throws Exception{
         Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
@@ -177,6 +193,7 @@ public class FacilityServiceTests {
         Boolean result = service.uploadImageToDB(facility,file);
         assertEquals(false, result);
     }
+<<<<<<< HEAD
 >>>>>>> parent of ef7c64e (authentication)
 
     // @Test
@@ -193,5 +210,7 @@ public class FacilityServiceTests {
     // Boolean result = service.uploadImageToDB(facility,file);
     // assertEquals(false, result);
     // }
+=======
+>>>>>>> parent of ef7c64e (authentication)
 
 }
