@@ -123,6 +123,7 @@ public class FacilityServiceTests {
 
     // @Test
     // public void testThatUploadImageWorks() throws Exception{
+<<<<<<< HEAD
     // Facility facility=new Facility("cd","Sai",new
     // FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
     // String name = "file.txt";
@@ -135,6 +136,34 @@ public class FacilityServiceTests {
     // Boolean result = service.uploadImageToDB(facility,file);
     // assertEquals(true, result);
     // }
+=======
+    //     Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
+    //     String name = "file.txt";
+    //     String originalFileName = "file.txt";
+    //     String contentType = "text/plain";
+    //     byte[] content = null;
+    //     MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+    //     Mockito.when(service.updateData(facility)).thenReturn(facility);
+    //     Boolean result = service.uploadImageToDB(facility,file);
+    //     assertEquals(true, result);
+    // }
+
+    // @Test
+    // public void testThatUploadImageNotWorks() throws Exception{
+    //     Facility facility=new Facility("cd","Sai",new FacilityAddress("aa","aa","aa","aa","aa"),Supplier.builder()._id("2354542345").build(),"aa");
+    //     String name = "file.txt";
+    //     String originalFileName = "file.txt";
+    //     String contentType = "text/plain";
+    //     byte[] content = null;
+    //     MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+    //     Mockito.when(service.updateData(facility)).thenThrow(RuntimeException.class);
+    //     Boolean result = service.uploadImageToDB(facility,file);
+    //     assertEquals(false, result);
+    // }
+
+   
+    
+>>>>>>> ef7c64e559db65018ff67d4e5d7aaa2751d0908f
 
     // @Test
     // public void testThatUploadImageNotWorks() throws Exception{
