@@ -15,20 +15,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Style {
-   
+
     @Id
     private String _id;
-    
+
     private String styleName;
-    
+
     private String styleType;
-    
+
     @DocumentReference(collection = "facilities")
     private Facility facilityId;
-    
+
     @DocumentReference(collection = "suppliers")
     private Supplier supplierId;
 
     @DocumentReference(collection = "rawMaterials")
     private ArrayList<RawMaterial> RawMaterials;
+
+    @DocumentReference(collection = "brands")
+    private Brand brand;
 }
