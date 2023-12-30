@@ -15,10 +15,19 @@ public class LoginService {
         return token;
     }
 
-    public String validateToken(String token, String name) {
-        if (token.equals(generateToken(name, ""))) {
-            return "Valid";
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey("ur97q2e7r2934892rnu213rn09217349782190348y12").parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return "Invalid";
+    }
+
+    public String extractToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
     }
 }
