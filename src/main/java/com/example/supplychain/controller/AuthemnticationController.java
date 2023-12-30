@@ -3,6 +3,7 @@ package com.example.supplychain.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class AuthemnticationController {
     AutenticationService loginService;
  @PostMapping("/{username}/{pwd}")
     public String login(@PathVariable String username, @PathVariable String pwd){
-        return loginService.getToken(username,pwd);
+        return loginService.getToken(username,pwd);  
     }
     @GetMapping("/validate/{username}")
     public ResponseEntity<String> tokenValidation(@RequestHeader("Authorization") String authorizationHeader,@PathVariable String username) {
@@ -31,5 +32,15 @@ public class AuthemnticationController {
             return ResponseEntity.ok("Valid token");
         } 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-    }   
+    }  
+
+    @ExceptionHandler(value=RuntimeException.class)
+     public ResponseEntity<?> runtimeExeHandle(){
+        return new ResponseEntity<>("Runtime Exception occured", HttpStatus.BAD_REQUEST);
+    }
+
+     @ExceptionHandler(value=IllegalArgumentException.class)
+     public ResponseEntity<?> IllegalArgumentException(){
+        return new ResponseEntity<>("Illegal Argument Exception occured", HttpStatus.BAD_REQUEST);
+    }
 }
