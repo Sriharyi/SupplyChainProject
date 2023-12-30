@@ -31,4 +31,7 @@ public class Style {
 
     @DocumentReference(collection = "rawMaterials")
     private ArrayList<RawMaterial> RawMaterials;
+    
+    @DocumentReference(collection = "brands")
+    private Brand brand;
 }

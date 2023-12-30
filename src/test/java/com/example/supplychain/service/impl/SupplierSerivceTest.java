@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.repository.SupplierRepository;
@@ -138,4 +140,51 @@ public class SupplierSerivceTest {
         assertEquals(false, result);
         
     }
+
+    @Test
+    public void testThatSupplierUploadImageWorks(){
+        Supplier supplier = Supplier.builder()
+        ._id("6542334")
+        .supplierName("Sample Supplier")
+        .supplierContact("123-456-7890")
+        .supplierEmail("sample@supplier.com")
+        .supplierWebsite("www.sample-supplier.com")
+        .supplierTierNo("Tier 1")
+        .build();
+        Mockito.when(repo.findById(Mockito.anyString())).thenReturn(Optional.of(supplier));
+        Mockito.when(repo.save(Mockito.any(Supplier.class))).thenReturn(Mockito.any(Supplier.class));
+                 
+        String name = "image";
+        String originalFileName = "img.jpg";
+        String contentType = "image/jpg";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Boolean result =  service.updateImage("6542334", file);
+
+        assertEquals(true, result);
+
+    }
+
+    @Test
+    public void testThatSupplierUploadImageNotWorks(){
+        Supplier supplier = Supplier.builder()
+        ._id("6542334")
+        .supplierName("Sample Supplier")
+        .supplierContact("123-456-7890")
+        .supplierEmail("sample@supplier.com")
+        .supplierWebsite("www.sample-supplier.com")
+        .supplierTierNo("Tier 1")
+        .build();
+        Mockito.when(repo.findById(Mockito.anyString())).thenReturn(Optional.of(supplier));                 
+        String name = "image";
+        String originalFileName = "img.pdf";
+        String contentType = "image/pdf";
+        byte[] content = null;
+        MultipartFile file = new MockMultipartFile(name,originalFileName, contentType, content);
+        Boolean result =  service.updateImage("6542334", file);
+
+        assertEquals(false, result);
+
+    }
+
 }

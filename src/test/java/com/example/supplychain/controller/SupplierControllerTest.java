@@ -3,8 +3,10 @@ package com.example.supplychain.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(value = SupplierController.class)
 public class SupplierControllerTest {
     
-        @Autowired
+    @Autowired
     MockMvc mockMvc;
 
     @MockBean
@@ -58,6 +60,68 @@ public class SupplierControllerTest {
 
     }
 
+
+    @Test
+    public void testThatSupplierCanThrowExceptionwhenGetFromUsingId() throws Exception
+    {
+
+        Supplier expectedOutput = Supplier.builder()
+                ._id("")
+                .supplierName("Sample Supplier")
+                .supplierContact("123-456-7890")
+                .supplierEmail("sample@supplier.com")
+                .supplierWebsite("www.sample-supplier.com")
+                .supplierTierNo("Tier 1")
+                .build();
+
+        Mockito.when(service.getById(Mockito.anyString())).thenThrow(RuntimeException.class);
+            
+        String result = mockMvc.perform(MockMvcRequestBuilders
+                                        .get("/supplier/select/id")).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                        .andReturn().getResponse()
+                                        .getContentAsString();
+                                        System.out.println("___________");
+                                        System.out.println(result);
+                                        System.out.println("___________");
+
+            
+        Assertions.assertThat(result).isEqualTo("");
+
+    }
+    @Test
+    public void testThatAllSuppliercanbeGetCorrectly() throws Exception{
+         Supplier supplier1 = Supplier.builder()
+                ._id("212345654")
+                .supplierName("Sample Supplier")
+                .supplierContact("123-456-7890")
+                .supplierEmail("sample@supplier.com")
+                .supplierWebsite("www.sample-supplier.com")
+                .supplierTierNo("Tier 1")
+                .build();
+                 Supplier supplier2 = Supplier.builder()
+                ._id("379564523")
+                .supplierName("Sample Supplier")
+                .supplierContact("123-456-7890")
+                .supplierEmail("sample@supplier.com")
+                .supplierWebsite("www.sample-supplier.com")
+                .supplierTierNo("Tier 1")
+                .build();
+
+             Mockito.when(service.getAllSupplier()).thenReturn(List.of(supplier1, supplier2));
+
+                 
+             String result = mockMvc.perform(MockMvcRequestBuilders
+                                        .get("/supplier/select/all")).andExpect(MockMvcResultMatchers.status().isOk())
+                                        .andReturn().getResponse()
+                                        .getContentAsString();
+                                        System.out.println("___________");
+                                        System.out.println(result);
+                                        System.out.println("___________");
+            List<Object> actualoutput = Arrays.asList(new ObjectMapper().readValue(result,Supplier[].class));
+
+            Assertions.assertThat(actualoutput).hasSize(2);
+    }
+    
     @Test
     public void testThatSupplierCanBeSavedCorrectly() throws Exception{
          
@@ -160,4 +224,4 @@ public class SupplierControllerTest {
         String expected =  "Internal error";
         assertEquals(result,expected);
         }
-}
+    }

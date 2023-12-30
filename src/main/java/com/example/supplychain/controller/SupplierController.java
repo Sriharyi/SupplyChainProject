@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.supplychain.model.Supplier;
 import com.example.supplychain.service.SupplierServiceInterface;
 
-
 @RestController
 @RequestMapping("supplier")
 public class SupplierController {
@@ -30,54 +29,35 @@ public class SupplierController {
     @Autowired
     private SupplierServiceInterface service;
 
-      //write crud operations here
+    // write crud operations here
     @GetMapping("/hello")
     public String get() {
         return "Hello World!";
     }
 
-    //create and save the Supplier
+    // create and save the Supplier
     @PostMapping("/save")
     public ResponseEntity<Supplier> insertSupplier(@RequestBody Supplier supplier) {
-        try {
-            
-            return new ResponseEntity<Supplier>(service.saveData(supplier),HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<Supplier>(HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<Supplier>(service.saveData(supplier), HttpStatus.CREATED);
     }
-    
 
-    //select all Supplier
+    // select all Supplier
     @GetMapping("/select/all")
     public ResponseEntity<List<Supplier>> selectAll() {
-        try {
-            return new ResponseEntity<List<Supplier>>( service.getAllSupplier(),HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<List<Supplier>>(service.getAllSupplier(), HttpStatus.OK);
     }
 
-
-    //select Supplier by id;
+    // select Supplier by id;
     @GetMapping("/select/{id}")
-    public ResponseEntity<Supplier> selectById(@PathVariable("id")String id){
-        try {
-            return new ResponseEntity<Supplier>( service.getById(id),HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>( null,HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Supplier> selectById(@PathVariable("id") String id) {
+        return new ResponseEntity<Supplier>(service.getById(id), HttpStatus.OK);
     }
 
-
-    //update the Supplier;
+    // update the Supplier;
     @PutMapping("update")
     public ResponseEntity<Supplier> updateSupplier(@RequestBody Supplier supplier) {
         try {
-            return new ResponseEntity<Supplier>(service.updateData(supplier),HttpStatus.OK);
+            return new ResponseEntity<Supplier>(service.updateData(supplier), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Supplier>(HttpStatus.BAD_REQUEST);
@@ -85,117 +65,102 @@ public class SupplierController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteSupplier(@PathVariable String id)
-    {
-        Boolean result =false;
+    public ResponseEntity<String> deleteSupplier(@PathVariable String id) {
+        Boolean result = false;
         try {
             result = service.deleteData(id);
-            if(result){
-                    return  new ResponseEntity<String>("Deleted Successfully" ,HttpStatus.OK);
-            }
-            else return new ResponseEntity<String>( "Id not found",HttpStatus.NOT_FOUND);
-           
+            if (result) {
+                return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
+            } else
+                return new ResponseEntity<String>("Id not found", HttpStatus.NOT_FOUND);
+
         } catch (Exception e) {
             e.printStackTrace();
-           return new ResponseEntity<String>( "Internal error",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("Internal error", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PatchMapping("/update/uploadimg/{id}")
-    public ResponseEntity<?>  updateSupplierLogo(@PathVariable String id ,@RequestParam("image")MultipartFile image) throws IOException{
-      try {
-          Boolean result = false;
-          if(service.getById(id)!=null)
-          {
-              result = service.updateImage(id, image);
-              if(result)
-               return ResponseEntity.ok("Image updated successfully for entity with id: "+id);
-              else
-                return new ResponseEntity<String>( "Image file only accepted",HttpStatus.BAD_REQUEST);
-          }else
-          {
-             return new ResponseEntity<String>( "Id not found",HttpStatus.NOT_FOUND);
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
-          return ResponseEntity.badRequest().build();
-      }
-    }    
+    public ResponseEntity<?> updateSupplierLogo(@PathVariable String id, @RequestParam("image") MultipartFile image)
+            throws IOException {
+                    service.updateImage(id, image);
+                    return ResponseEntity.ok("Image updated successfully for entity with id: " + id);
+    }
 
-  @GetMapping("getimage/{id}")
-  public ResponseEntity<?> downloadSupplierLogo(@PathVariable String id) {
-      byte[] imageData = service.downloadImage(id);
-      return ResponseEntity.status(HttpStatus.OK)
-                 .contentType(MediaType.valueOf("image/jpeg"))
-                 .body(imageData);
-  }
+    @GetMapping("getimage/{id}")
+    public ResponseEntity<?> downloadSupplierLogo(@PathVariable String id) {
+        byte[] imageData = service.downloadImage(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/jpeg"))
+                .body(imageData);
+    }
 
-  @DeleteMapping("delete/image/{id}")
-  public ResponseEntity<?> updateFiledinSupplier(@PathVariable String id){
-     Boolean result = false;
-     try {
-         result = service.deleteImage(id);
-         if(result)
-         return ResponseEntity.ok("Image deleted successfully for entity ");
-         else
-         return ResponseEntity.notFound().build();
-     } catch (Exception e) {
-        e.printStackTrace();
-         return ResponseEntity.badRequest().build();
-     }
-  }
-  
+    @DeleteMapping("delete/image/{id}")
+    public ResponseEntity<?> updateFiledinSupplier(@PathVariable String id) {
+        Boolean result = false;
+        try {
+            result = service.deleteImage(id);
+            if (result)
+                return ResponseEntity.ok("Image deleted successfully for entity ");
+            else
+                return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
 
 // SupplierBuilder.builder()
-//                 ._id(generateRandomHexString(24))
-//                 .supplierName("Sample Supplier")
-//                 .supplierAddress(Address.builder()
-//                         .street("123 Main St")
-//                         .city("Cityville")
-//                         .pincode("12345")
-//                         .state("Stateville")
-//                         .country("Countryland")
-//                         .build())
-//                 .supplierContact("123-456-7890")
-//                 .supplierEmail("sample@supplier.com")
-//                 .supplierWebsite("www.sample-supplier.com")
-//                 .supplierTierNo("Tier 1")
-//                 .rawMaterial("Sample Raw Material")
-//                 .styles("Sample Styles")
-//                 .build();
+// ._id(generateRandomHexString(24))
+// .supplierName("Sample Supplier")
+// .supplierAddress(Address.builder()
+// .street("123 Main St")
+// .city("Cityville")
+// .pincode("12345")
+// .state("Stateville")
+// .country("Countryland")
+// .build())
+// .supplierContact("123-456-7890")
+// .supplierEmail("sample@supplier.com")
+// .supplierWebsite("www.sample-supplier.com")
+// .supplierTierNo("Tier 1")
+// .rawMaterial("Sample Raw Material")
+// .styles("Sample Styles")
+// .build();
 
 // SupplierBuilder.builder()
-//         ._id(generateRandomHexString(24))
-//         .supplierName("Another Supplier")
-//         .supplierAddress(SupplierBuilder.Address.builder()
-//                 .street("456 Oak St")
-//                 .city("Villagetown")
-//                 .pincode("54321")
-//                 .state("Stateland")
-//                 .country("Countryville")
-//                 .build())
-//         .supplierContact("987-654-3210")
-//         .supplierEmail("another@supplier.com")
-//         .supplierWebsite("www.another-supplier.com")
-//         .supplierTierNo("Tier 2")
-//         .rawMaterial("Another Raw Material")
-//         .styles("Another Styles")
-//         .build();
+// ._id(generateRandomHexString(24))
+// .supplierName("Another Supplier")
+// .supplierAddress(SupplierBuilder.Address.builder()
+// .street("456 Oak St")
+// .city("Villagetown")
+// .pincode("54321")
+// .state("Stateland")
+// .country("Countryville")
+// .build())
+// .supplierContact("987-654-3210")
+// .supplierEmail("another@supplier.com")
+// .supplierWebsite("www.another-supplier.com")
+// .supplierTierNo("Tier 2")
+// .rawMaterial("Another Raw Material")
+// .styles("Another Styles")
+// .build();
 // SupplierBuilder.builder()
-//         ._id(generateRandomHexString(24))
-//         .supplierName("Third Supplier")
-//         .supplierAddress(SupplierBuilder.Address.builder()
-//                 .street("789 Pine St")
-//                 .city("Townsville")
-//                 .pincode("98765")
-//                 .state("Stateville")
-//                 .country("Countryland")
-//                 .build())
-//         .supplierContact("555-123-4567")
-//         .supplierEmail("third@supplier.com")
-//         .supplierWebsite("www.third-supplier.com")
-//         .supplierTierNo("Tier 3")
-//         .rawMaterial("Third Raw Material")
-//         .styles("Third Styles")
-//         .build();
+// ._id(generateRandomHexString(24))
+// .supplierName("Third Supplier")
+// .supplierAddress(SupplierBuilder.Address.builder()
+// .street("789 Pine St")
+// .city("Townsville")
+// .pincode("98765")
+// .state("Stateville")
+// .country("Countryland")
+// .build())
+// .supplierContact("555-123-4567")
+// .supplierEmail("third@supplier.com")
+// .supplierWebsite("www.third-supplier.com")
+// .supplierTierNo("Tier 3")
+// .rawMaterial("Third Raw Material")
+// .styles("Third Styles")
+// .build();
