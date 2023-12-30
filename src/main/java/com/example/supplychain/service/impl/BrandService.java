@@ -21,47 +21,22 @@ public class BrandService implements BrandServiceInterface {
     @Autowired
     private BrandRepository repo;
 
-    // @Override
-    // public Brand saveData(Brand brand) {
-    // Brand b = new Brand();
-    // try {
-    // b = repo.save(brand);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // return b;
-    // }
-
     @Override
-    public Brand saveData(Brand brand) {
-        try {
-            if (!repo.existsById(brand.get_id()))
-                return repo.save(brand);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Brand saveData(Brand brand) throws Exception {
+        if (!repo.existsById(brand.get_id()))
+            return repo.save(brand);
         return null;
     }
 
     @Override
-    public void updateBrand(Brand brand) {
-        repo.save(brand);
+    public Brand updateBrand(Brand brand) throws Exception {
+        return repo.save(brand);
     }
 
     @Override
-    public Boolean deleteData(String id) {
-        Boolean result = false;
-        try {
-            if (repo.existsById(id)) {
-                repo.deleteById(id);
-                result = true;
-            } else {
-                result = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public String deleteData(String id) throws Exception {
+        repo.deleteById(id);
+        return "Deleted Successfully";
     }
 
     @Override
@@ -75,7 +50,7 @@ public class BrandService implements BrandServiceInterface {
     }
 
     @Override
-    public String updateImagePath(String id, MultipartFile file) throws IOException {
+    public String updateImagePath(String id, MultipartFile file) throws Exception {
         String imagePath = imageFolder + file.getOriginalFilename();
         System.out.println(imagePath);
 
@@ -87,7 +62,7 @@ public class BrandService implements BrandServiceInterface {
             updateBrand(brand);
             file.transferTo(new File(imagePath));
             return "Image Saved";
-        } catch (IOException e) {
+        } catch (Exception e) {
             return "No image file found";
         }
     }
@@ -101,7 +76,7 @@ public class BrandService implements BrandServiceInterface {
     }
 
     @Override
-    public void deleteImagePath(String id, String imagename) throws IOException {
+    public void deleteImagePath(String id, String imagename) throws Exception {
         Brand brand = getById(id);
         brand.setPath("");
         updateBrand(brand);

@@ -40,7 +40,7 @@ public class BrandController {
             Brand b = service.saveData(brand);
             if (b != null)
                 return new ResponseEntity<Brand>(b, HttpStatus.CREATED);
-            return new ResponseEntity<Brand>(b, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Brand>(new Brand(), HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Brand>(HttpStatus.BAD_REQUEST);
@@ -87,12 +87,13 @@ public class BrandController {
         try {
             List<Brand> brands = service.getAllBrand();
             if (brands == null) {
-                return new ResponseEntity<>(new ArrayList<Brand>(Arrays.asList(new Brand())), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ArrayList<Brand>(), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(brands, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ArrayList<Brand>(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -107,19 +108,20 @@ public class BrandController {
             return new ResponseEntity<>(brand, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new Brand(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // update the Brand;
     @PutMapping("update")
-    public ResponseEntity<String> updateBrand(@RequestBody Brand brand) {
+    public ResponseEntity<Brand> updateBrand(@RequestBody Brand brand) {
         try {
-            service.updateBrand(brand);
-            return new ResponseEntity<String>("Updated Successfully", HttpStatus.OK);
+            if (service.getById(brand.get_id()) != null)
+                return new ResponseEntity<Brand>(service.updateBrand(brand), HttpStatus.OK);
+            return new ResponseEntity<Brand>(new Brand(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>("Internal error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Brand>(new Brand(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -127,12 +129,9 @@ public class BrandController {
     public ResponseEntity<String> deleteBrand(@PathVariable String id) {
         try {
             if (service.getById(id) != null)
-                service.deleteData(id);
-            else
-                return new ResponseEntity<String>("Id not found", HttpStatus.NOT_FOUND);
-            return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
+                return new ResponseEntity<String>(service.deleteData(id), HttpStatus.OK);
+            return new ResponseEntity<String>("Id not found", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return new ResponseEntity<String>("Internal error", HttpStatus.BAD_REQUEST);
         }
